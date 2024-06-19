@@ -1,0 +1,21 @@
+.main {
+  padding: 5rem;
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.typo {
+  font-size: 36px;
+  color: #000;
+}
+
+.logo {
+  width: 122px;
+  height: 58px;
+}
