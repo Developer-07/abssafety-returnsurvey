@@ -90,6 +90,12 @@ export default function Dialog() {
     }
 
 
+    const createArticle = () => {
+        const newArticles = [...articles];
+        newArticles.push({});
+        setArticles(newArticles);
+    }
+
 
     return (
         <main className={styles.main}>
@@ -153,7 +159,7 @@ export default function Dialog() {
                 </div>
                 <div style={{ display: "flex", visibility: page == 3 ? "visible" : "hidden", flexDirection: "column", gap: 30 }}>
                     <div>
-                        <Button text="Artikel hinzufügen" onPress={() => setArticles(articles => [...articles, {}])} />
+                        <Button text="Artikel hinzufügen" onPress={() => createArticle()} />
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 30, overflowY: "auto", overflowX: "hidden", maxHeight: "60vh" }}>
                         {articles.map((article: any, index: any) => {
