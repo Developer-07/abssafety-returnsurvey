@@ -1,5 +1,5 @@
 # Use the official Python image from the Docker Hub
-FROM node:14
+FROM node:22
 
 # Set environment variables to avoid prompts during installations
 ENV DEBIAN_FRONTEND=noninteractiv
