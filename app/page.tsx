@@ -6,6 +6,8 @@ import TypeCard from "@/components/TypeCard";
 import { Poppins } from "next/font/google";
 import { useEffect, useState } from 'react';
 import { useSearchParams } from "next/navigation";
+import { Suspense } from 'react';
+
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -19,6 +21,7 @@ export default function Home() {
   console.log("KEY: " + key);
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <main className={styles.main}>
       <div className={styles.header}>
         <img src="abs.png" width={122} height={58} className="logo" />
@@ -30,5 +33,6 @@ export default function Home() {
         <TypeCard lock={key} id="return" icon="3" title="Rückgabe" text="Sie möchten ein Produkt zurückgeben, dass nicht mehr benötigt wird oder falsch bestellt wird? Wählen Sie diese Option." />
       </div>
     </main>
+    </Suspense>
   );
 }
