@@ -22,4 +22,4 @@ RUN npm install
 
 
 # Command to run your application
-CMD ["npm", "next", "dev"]
+CMD ["npx", "next", "dev"]
