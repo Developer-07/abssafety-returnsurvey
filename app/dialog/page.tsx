@@ -76,16 +76,16 @@ export default function Dialog() {
                 },
             }
         });
-        const response = await fetch("https://abssafety.atlassian.net/rest/api/2/issue", {
-            method: "POST",
+        const response = await fetch("http://localhost:5000/issue?project=ITT&summary=REST EXAMPLE 2&description=TEIADMUIAS DUIAGNjsdf josdönfm&issuetype=10116", {
+            method: "GET",
+            mode: "no-cors",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: 'Basic ZGV2ZWxvcGVyQGFic3R1cnpzaWNoZXJ1bmcuZGU6QVRBVFQzeEZmR0YwWUZMMHhzRnhjdnFaTkVqZTEyZnM3enFPU1d2dlpvUnRkYkEyS0U5Z1NSVWlhYW5nd2xhTXFYTjQtWjVSdERVWGp3SXcwaEZnRzAzZndLbVFuZDF4dkQwTU1ia2dxUTdKWVdfWWNFNnEtT0w0elFWV3FZZUFqOGVCZlZfN0s1ZUVoYnpNTWY3RWhyTWt3M25tM1M3Sk1FSzhfbWxUVVNRNkFCUGdoNWwzZUdRPTVBRjM3OUFD',
-                
-            },
+            }
         })
         console.log(response)
-        const data = response.json();
+        const data = await response.json();
         console.log(data);
     }
 
