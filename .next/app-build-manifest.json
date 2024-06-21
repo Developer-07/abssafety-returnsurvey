@@ -17,11 +17,6 @@
       "static/chunks/main-app.js",
       "static/css/app/dialog/page.css",
       "static/chunks/app/dialog/page.js"
-    ],
-    "/test/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/test/page.js"
     ]
   }
 }

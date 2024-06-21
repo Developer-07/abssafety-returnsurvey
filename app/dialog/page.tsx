@@ -63,7 +63,7 @@ export default function Dialog() {
             articles: articles
         }
 
-        const body = JSON.stringify({
+        const body = {
             "fields": {
                 "project": {
                     "key": "ITT"
@@ -75,14 +75,30 @@ export default function Dialog() {
                     "id": "10116"
                 },
             }
-        });
-        const response = await fetch("http://localhost:5000/issue?project=ITT&summary=REST EXAMPLE 2&description=TEIADMUIAS DUIAGNjsdf josdönfm&issuetype=10116", {
-            method: "GET",
+        };
+        console.log(body);
+        console.log(JSON.stringify(body))
+        const response = await fetch("http://localhost:8000/proxy", {
+            method: "POST",
             mode: "no-cors",
             headers: {
                 "Content-Type": "application/json",
+                "Target": "https://abssafety.atlassian.net/rest/api/2/issue",
                 Authorization: 'Basic ZGV2ZWxvcGVyQGFic3R1cnpzaWNoZXJ1bmcuZGU6QVRBVFQzeEZmR0YwWUZMMHhzRnhjdnFaTkVqZTEyZnM3enFPU1d2dlpvUnRkYkEyS0U5Z1NSVWlhYW5nd2xhTXFYTjQtWjVSdERVWGp3SXcwaEZnRzAzZndLbVFuZDF4dkQwTU1ia2dxUTdKWVdfWWNFNnEtT0w0elFWV3FZZUFqOGVCZlZfN0s1ZUVoYnpNTWY3RWhyTWt3M25tM1M3Sk1FSzhfbWxUVVNRNkFCUGdoNWwzZUdRPTVBRjM3OUFD',
-            }
+            },
+            body: JSON.stringify({
+                fields: {
+                    project: {
+                        key: "ITT"
+                    },
+                    summary: "Ticket",
+                    description: "Ticket",
+                    issuetype: {
+                        name: "Task",
+                        id: "10116"
+                    },
+                }
+            })
         })
         console.log(response)
         const data = await response.json();
