@@ -1,10 +1,10 @@
 {
   "pages": {
-    "/page": [
+    "/dialog/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/page.css",
-      "static/chunks/app/page.js"
+      "static/css/app/dialog/page.css",
+      "static/chunks/app/dialog/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -12,11 +12,11 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/dialog/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/dialog/page.css",
-      "static/chunks/app/dialog/page.js"
+      "static/css/app/page.css",
+      "static/chunks/app/page.js"
     ]
   }
 }
