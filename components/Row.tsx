@@ -21,7 +21,7 @@ export default function Row({ label, placeholder, value, setValue, children, fir
     const [documentNumber, setDocumentNumber] = React.useState(value[index].documentNumber);
     const [number, setNumber] = React.useState(value[index].articleNumber);
     const [numberOneVisible, setNumberOneVisible] = React.useState(false);
-    const [numberTwoVisible, setNumberTwoVisible] = React.useState(false);
+    const [numberTwoVisible, setNumberTwoVisible] = React.useState(true);
     const [numberThreeVisible, setNumberThreeVisible] = React.useState(false);
     const [documentNumberVisible, setDocumentNumberVisible] = React.useState(false);
     const [serial, setSerial] = React.useState(value[index].serial);
@@ -74,6 +74,13 @@ export default function Row({ label, placeholder, value, setValue, children, fir
             <div>
                 <Checkbox checkRef={checkRef} readOnly={readOnly} setValue={(val: any) => { update("selected", val); }} />
             </div>
+                        <div style={{ display: "flex", width: 200, flexDirection: "row", gap: 10, alignItems: "center", justifyContent: "flex-end" }}>
+                <div style={{ display: "flex", alignItems: "flex-end", flexDirection: "column", gap: 10, }}>
+                    <p style={{ color: "#000", display: numberThreeVisible ? "none" : "flex" }}>{count}</p>
+                    <Input type="number" min={0} noLabel hidden={numberThreeVisible == false} placeholder={count} value={count} setValue={(val: any) => { setCount(val); update("count", val) }} />
+                </div>
+                <Button icon text="edit" onPress={() => setNumberThreeVisible(!numberThreeVisible)} />
+            </div>
             <div style={{ display: "flex", width: 200, flexDirection: "row", gap: 10, alignItems: "center", justifyContent: "flex-end" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10, justifyContent: "flex-end" }}>
                     <p style={{ color: "#000", display: numberOneVisible ? "none" : "flex" }}>{number}</p>
@@ -84,16 +91,10 @@ export default function Row({ label, placeholder, value, setValue, children, fir
             <div style={{ display: "flex", width: 200, flexDirection: "row", gap: 10, alignItems: "center", justifyContent: "flex-end" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10, justifyContent: "flex-end" }}>
                     <p style={{ color: "#000", display: numberTwoVisible ? "none" : "flex" }}>{serial}</p>
-                    <Input noLabel hidden={numberTwoVisible == false} placeholder={serial} value={serial} setValue={(val: any) => { setSerial(val); update("serial", val) }} />
+                    <Input noLabel hidden={numberTwoVisible == false} value={serial} setValue={(val: any) => { setSerial(val); update("serial", val) }} />
                 </div>
             </div>
-            <div style={{ display: "flex", width: 200, flexDirection: "row", gap: 10, alignItems: "center", justifyContent: "flex-end" }}>
-                <div style={{ display: "flex", alignItems: "flex-end", flexDirection: "column", gap: 10, }}>
-                    <p style={{ color: "#000", display: numberThreeVisible ? "none" : "flex" }}>{count}</p>
-                    <Input type="number" min={0} noLabel hidden={numberThreeVisible == false} placeholder={count} value={count} setValue={(val: any) => { setCount(val); update("count", val) }} />
-                </div>
-                <Button icon text="edit" onPress={() => setNumberThreeVisible(!numberThreeVisible)} />
-            </div>
+
         </div>
     )
 }

@@ -33,10 +33,13 @@ export default function Dialog() {
     const [city, setCity] = useState("");
     const [salutation, setSalutation] = useState("Herr");
     const [salutionOptions, setSalutionOptions] = useState([{ value: "Herr", label: "Herr" }, { value: "Frau", label: "Frau" }])
+    const [sectionOptions, setSectionOptions] = useState([{ value: "Arbeitsvorbereitung", label: "Arbeitsvorbereitung" }, { value: "Auftragsbearbeitung", label: "Auftragsbearbeitung" }, { value: "Montage", label: "Montage" }, { value: "Qualitätssicherung", label: "Qualitätssicherung",} , { value: "Vertrieb", label: "Vertrieb" }])
+    const [selectedSection, setSelectedSection] = useState("")
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [endCustomer, setEndCustomer] = useState("");
+    const [email, setEmail] = useState("");
     const [documentNumber, setDocumentNumber] = useState("");
     const [wholeTicket, setWholeTicket] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
@@ -89,7 +92,7 @@ export default function Dialog() {
             var positions = data.map((position: any) => {
                 if (position.PositionKind == "A" || position.PositionKind == "H") {
                     return {
-                        serial: position.GoodsNumber,
+                        serial: "",
                         articleNumber: position.ArticleNumber,
                         count: position.Quantity,
                         documentNumber: position.DocumentNumber,
@@ -98,7 +101,16 @@ export default function Dialog() {
                 }
             })
             positions = positions.filter((position: any) => position != null && position != undefined);
+
+            positions = positions.sort((a: any, b: any) => {
+                return a.postionNumber - b.postionNumber;
+            })
+
+
             setArticles(positions)
+
+
+
 
             setTimeout(() => {
                 setIsLoading(false);
@@ -123,9 +135,11 @@ export default function Dialog() {
             var lastName = data.LastName;
             var salutation = data.Salutation;
             var telephoneNumber = data.Contact.TelephoneNumber1;
+            var email = data.Contact.EMail1;
 
             setFirstName(firstName ? firstName : "");
             setLastName(lastName ? lastName : "");
+            setEmail(email ? email : "")
             setSalutation(salutation ? salutation : "");
             setPhoneNumber(telephoneNumber ? telephoneNumber : "");
 
@@ -227,6 +241,24 @@ export default function Dialog() {
             salutionID = "10131";
         }
 
+        var sectionId = "10152";
+        if (selectedSection == "Arbeitsvorbereitung") {
+            sectionId = "10152";
+        }
+        if (selectedSection == "Auftragsbearbeitung") {
+            sectionId = "10197";
+        }
+        if (selectedSection == "Montage") {
+            sectionId = "10151";
+        }
+        if (selectedSection == "Qualitätssicherung") {
+            sectionId = "10149";
+        }
+        if (selectedSection == "Vertrieb") {
+            sectionId = "10150";
+        }
+
+
         var selectedArticles = articles.filter((article: any) => article.selected == true);
         var length = selectedArticles.length;
 
@@ -239,6 +271,7 @@ export default function Dialog() {
                 project: {
                     key: "RMA"
                 },
+                customfield_10067: email,
                 summary: "[AUTO] Neues Ticket",
                 description: "Ein neues RMA-Ticket wurde erstellt für die " + companyName + " in " + cityName + " (" + streetName + " " + streetNumber + ", " + plz + "). " + (wholeTicket ? "Der gesamte Auftrag wurde reklamiert." : "Es wurde" + (length > 1 ? "n" : "") + " " + length + " Artikel reklamiert."),
                 customfield_10024: requestTypeId.toString(),
@@ -248,6 +281,9 @@ export default function Dialog() {
                 customfield_10079: streetName + " " + streetNumber,
                 customfield_10206: parseFloat(customerNumber),
                 customfield_10065: phoneNumber,
+                customfield_10100: {
+                    "id": sectionId.toString()
+                },
                 customfield_10074: firstName,
                 customfield_10075: lastName,
                 customfield_10082: note,
@@ -353,10 +389,12 @@ export default function Dialog() {
                     <p className={styles.typo}>-Support</p>
                 </div>
                 <div style={{ display: page == 0 ? "flex" : "none", flexDirection: "column", gap: 30 }}>
+                    <Dropdown label="ABS-Abteilung" value={selectedSection} setValue={setSelectedSection} options={sectionOptions} placeholder="ABS" />
                     <Input label="Kundennummer" value={customerNumber} setValue={setCustomerNumber} placeholder="ABC-123" />
                     <Input label="Firmenname" value={companyName} setValue={setCompanyName} placeholder="Max Mustermann GmbH" />
                     <Input label="Straße & Hausnummer" value={street} setValue={setStreet} placeholder="Musterstraße 12" />
                     <Input label="PLZ & Ort" value={city} setValue={setCity} placeholder="12345 Musterhausen" />
+    
                     <div style={{ display: "flex", flexDirection: "row", gap: 20, justifyContent: "space-between", alignItems: "center" }}>
                         <div style={{ display: "flex", flexDirection: "row", gap: 5 }}>
                             <div style={{ backgroundColor: "#B5181D", width: 12, height: 12, borderRadius: 50 }} />
@@ -376,7 +414,8 @@ export default function Dialog() {
                     <Input label="Vorname" value={firstName} setValue={setFirstName} placeholder="Max" />
                     <Input label="Nachname" value={lastName} setValue={setLastName} placeholder="Mustermann" />
                     <Input label="Telefonnummer" value={phoneNumber} setValue={setPhoneNumber} placeholder="+123 123123123123" />
-                    <Input label="Projektvorhaben (PV-Titel)" value={endCustomer} setValue={setEndCustomer} placeholder="Kölner Dom" />
+                    <Input label="E-Mail Adresse" value={email} setValue={setEmail} placeholder="max.mustermann@gmail.com" />
+                    <Input label="Bauvorhaben (BV-Titel)" value={endCustomer} setValue={setEndCustomer} placeholder="Kölner Dom" />
                     <div style={{ display: "flex", flexDirection: "row", gap: 20, justifyContent: "space-between", alignItems: "center" }}>
                         <div style={{ display: "flex", flexDirection: "row", gap: 5 }}>
 
@@ -421,14 +460,15 @@ export default function Dialog() {
                                 <p style={{ color: "#000" }}></p>
                             </div>
                             <div>
+                                <p style={{ color: "#000", fontWeight: "600" }}>Anzahl</p>
+                            </div>
+                            <div>
                                 <p style={{ color: "#000", fontWeight: "600" }}>Artikelnummer</p>
                             </div>
                             <div>
                                 <p style={{ color: "#000", fontWeight: "600" }}>Seriennummer</p>
                             </div>
-                            <div>
-                                <p style={{ color: "#000", fontWeight: "600" }}>Anzahl</p>
-                            </div>
+                            
                         </div>
                         {articles.map((article: any, index: any) => {
                             return (
