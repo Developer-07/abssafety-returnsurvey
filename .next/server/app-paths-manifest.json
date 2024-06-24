@@ -1,4 +1,6 @@
 {
+  "/dialog/page": "app/dialog/page.js",
+  "/success/page": "app/success/page.js",
   "/page": "app/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }

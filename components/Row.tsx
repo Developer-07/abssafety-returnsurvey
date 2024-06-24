@@ -14,7 +14,7 @@ const poppins = Poppins({
 });
 
 
-export default function Row({ label, placeholder, value, setValue, children, first, index, selectedArticles, setSelectedArticles }: any) {
+export default function Row({ label, placeholder, value, setValue, children, first, index, selectedArticles, setSelectedArticles, postionNumber }: any) {
     const [open, setOpen] = React.useState(first ? true : false);
 
     const [readOnly, setReadOnly] = React.useState(false);
@@ -69,6 +69,9 @@ export default function Row({ label, placeholder, value, setValue, children, fir
     return (
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "90%", }}>
             <div>
+                <p style={{ color: "#000", minWidth: 50, display: documentNumberVisible ? "none" : "flex" }}>{postionNumber}</p>
+            </div>
+            <div>
                 <Checkbox checkRef={checkRef} readOnly={readOnly} setValue={(val: any) => { update("selected", val); }} />
             </div>
             <div style={{ display: "flex", width: 200, flexDirection: "row", gap: 10, alignItems: "center", justifyContent: "flex-end" }}>
@@ -83,7 +86,6 @@ export default function Row({ label, placeholder, value, setValue, children, fir
                     <p style={{ color: "#000", display: numberTwoVisible ? "none" : "flex" }}>{serial}</p>
                     <Input noLabel hidden={numberTwoVisible == false} placeholder={serial} value={serial} setValue={(val: any) => { setSerial(val); update("serial", val) }} />
                 </div>
-                <Button icon text="edit" onPress={() => setNumberTwoVisible(!numberTwoVisible)} />
             </div>
             <div style={{ display: "flex", width: 200, flexDirection: "row", gap: 10, alignItems: "center", justifyContent: "flex-end" }}>
                 <div style={{ display: "flex", alignItems: "flex-end", flexDirection: "column", gap: 10, }}>
@@ -91,13 +93,6 @@ export default function Row({ label, placeholder, value, setValue, children, fir
                     <Input type="number" min={0} noLabel hidden={numberThreeVisible == false} placeholder={count} value={count} setValue={(val: any) => { setCount(val); update("count", val) }} />
                 </div>
                 <Button icon text="edit" onPress={() => setNumberThreeVisible(!numberThreeVisible)} />
-            </div>
-            <div style={{ display: "flex", width: 200, flexDirection: "row", gap: 10, alignItems: "center", justifyContent: "flex-end" }}>
-                <div style={{ display: "flex", alignItems: "flex-end", flexDirection: "column", gap: 10, }}>
-                    <p style={{ color: "#000", display: documentNumberVisible ? "none" : "flex" }}>{documentNumber}</p>
-                    <Input type="number" min={0} noLabel hidden={documentNumberVisible == false} placeholder={documentNumber} value={documentNumber} setValue={(val: any) => { setDocumentNumber(val); update("documentNumber", val) }} />
-                </div>
-                <Button icon text="edit" onPress={() => setDocumentNumberVisible(!documentNumberVisible)} />
             </div>
         </div>
     )
