@@ -21,7 +21,8 @@ export default function Dialog() {
     var params = useSearchParams();
     const key = params.get('key');
     const type = params.get('type');
-    const [articles, setArticles] = useState<any>([{ serial: "KWX83JKF", articleNumber: "775KVS", count: 1 }]);
+    const [articles, setArticles] = useState<any>([{ serial: "KWX83JKF", articleNumber: "775KVS", count: 1, documentNumber: "123"}]);
+    const [selectedArticles, setSelectedArticles] = useState(0);
     const router = useRouter();
 
     const [customerNumber, setCustomerNumber] = useState("12345");
@@ -64,10 +65,83 @@ export default function Dialog() {
             salutionID = "10131";
         }
 
+        var selectedArticles = articles.filter((article: any) => article.selected == true);
+        var length = selectedArticles.length;
 
+        if (wholeTicket) {
+            length = 0;
+        }
 
+        var body = {
+            fields: {
+                project: {
+                    key: "RMA"
+                },
+                summary: "Dies ist ein Test vom Praktikant!",
+                description: "Ticket",
+                customfield_10024: requestTypeId.toString(),
+                customfield_10080: cityName,
+                customfield_10059: companyName,
+                customfield_10078: plz,
+                customfield_10079: streetName + " " + streetNumber,
+                customfield_10206: parseFloat(customerNumber),
+                customfield_10065: phoneNumber,
+                customfield_10074: firstName,
+                customfield_10075: lastName,
+                customfield_10082: note,
+                customfield_10077: documentNumber,
+                customfield_10144: endCustomer,
+                customfield_10073: {
+                    "id": salutionID.toString()
+                },
+                issuetype: {
+                    id: "10049"
+                },
+            }
+        }
 
-        return;
+        for (var i = 0; i < length; i++) {
+            if (wholeTicket) {
+                break;
+            }
+
+            var article = selectedArticles[i];
+
+            if (i == 0) {
+                body.fields["customfield_10205"] = parseFloat(article.documentNumber);
+                body.fields["customfield_10088"] = article.articleNumber;
+                body.fields["customfield_10092"] = parseFloat(article.count);
+                body.fields["customfield_10120"] = article.serial;
+            }
+
+            if (i == 1) {
+                body.fields["customfield_10207"] = parseFloat(article.documentNumber);
+                body.fields["customfield_10089"] = article.articleNumber;
+                body.fields["customfield_10093"] = parseFloat(article.count);
+                body.fields["customfield_10121"] = article.serial;
+            }
+
+            if (i == 2) {
+                body.fields["customfield_10208"] = parseFloat(article.documentNumber);
+                body.fields["customfield_10094"] = article.articleNumber;
+                body.fields["customfield_10097"] = parseFloat(article.count);
+                body.fields["customfield_10122"] = article.serial;
+            }
+            
+            if (i == 3) {
+                body.fields["customfield_10209"] = parseFloat(article.documentNumber);
+                body.fields["customfield_10095"] = article.articleNumber;
+                body.fields["customfield_10098"] = parseFloat(article.count);
+                body.fields["customfield_10123"] = article.serial;
+            }
+
+            if (i == 4) {
+                body.fields["customfield_10210"] = parseFloat(article.documentNumber);
+                body.fields["customfield_10096"] = article.articleNumber;
+                body.fields["customfield_10099"] = parseFloat(article.count);
+                body.fields["customfield_10124"] = article.serial;
+            }
+        }
 
         const response = await fetch("https://proxy.mauritzlemgen.de/proxy", {
             method: "POST",
@@ -78,33 +152,7 @@ export default function Dialog() {
                 "Target": "https://abssafety.atlassian.net/rest/api/2/issue",
                 Authorization: 'Basic ZGV2ZWxvcGVyQGFic3R1cnpzaWNoZXJ1bmcuZGU6QVRBVFQzeEZmR0YwWUZMMHhzRnhjdnFaTkVqZTEyZnM3enFPU1d2dlpvUnRkYkEyS0U5Z1NSVWlhYW5nd2xhTXFYTjQtWjVSdERVWGp3SXcwaEZnRzAzZndLbVFuZDF4dkQwTU1ia2dxUTdKWVdfWWNFNnEtT0w0elFWV3FZZUFqOGVCZlZfN0s1ZUVoYnpNTWY3RWhyTWt3M25tM1M3Sk1FSzhfbWxUVVNRNkFCUGdoNWwzZUdRPTVBRjM3OUFD',
             },
-            body: JSON.stringify({
-                fields: {
-                    project: {
-                        key: "RMA"
-                    },
-                    summary: "Dies ist ein Test vom Praktikant!",
-                    description: "Ticket",
-                    customfield_10024: requestTypeId.toString(),
-                    customfield_10080: cityName,
-                    customfield_10059: companyName,
-                    customfield_10078: plz,
-                    customfield_10079: streetName + " " + streetNumber,
-                    customfield_10206: parseFloat(customerNumber),
-                    customfield_10065: phoneNumber,
-                    customfield_10074: firstName,
-                    customfield_10075: lastName,
-                    customfield_10082: note,
-                    customfield_10077: documentNumber,
-                    customfield_10144: endCustomer,
-                    customfield_10073: {
-                        "id": salutionID.toString()
-                    },
-                    issuetype: {
-                        id: "10049"
-                    },
-                }
-            }),
+            body: JSON.stringify(body),
             redirect: 'follow'
         })
 
@@ -168,7 +216,6 @@ export default function Dialog() {
                     </div>
                 </div>
                 <div style={{ display: page == 2 ? "flex" : "none", flexDirection: "column", gap: 30 }}>
-                    <Input label="Belegnummer (Packzettel, Lieferschein etc.)" value={documentNumber} setValue={setDocumentNumber} placeholder="ABC-123" />
                     <Textarea label="Bemerkung" value={note} setValue={setNote} placeholder="Das Produkt ist mir einfach runtergefallen" />
                     <div style={{ display: "flex", flexDirection: "row", gap: 20, justifyContent: "space-between", alignItems: "center" }}>
                         <div style={{ display: "flex", flexDirection: "row", gap: 5 }}>
@@ -193,21 +240,31 @@ export default function Dialog() {
 
                     </div>
                     <div style={{ display: wholeTicket ? "none" : "flex", flexDirection: "column", gap: 30, overflowY: "auto", overflowX: "hidden", maxHeight: "50vh" }}>
+                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "90%", }}>
+                        <div>
+                            <p style={{color: "#000"}}></p>
+                        </div>
+                        <div>
+                            <p style={{color: "#000", fontWeight: "600"}}>Artikelnummer</p>
+                        </div>
+                        <div>
+                            <p style={{color: "#000", fontWeight: "600"}}>Seriennummer</p>
+                        </div>
+                        <div>
+                            <p style={{color: "#000", fontWeight: "600"}}>Anzahl</p>
+                        </div>
+                        <div>
+                            <p style={{color: "#000", fontWeight: "600"}}>Belegnummer</p>
+                        </div>
+                    </div>
                         {articles.map((article: any, index: any) => {
                             return (
-                                <Row label={(index + 1) + ". Artikel"} index={index} value={articles} setValue={setArticles} first={index == 0}></Row>
+                                <Row selectedArticles={selectedArticles} article={article} setSelectedArticles={setSelectedArticles} label={(index + 1) + ". Artikel"} index={index} value={articles} setValue={setArticles} first={index == 0}></Row>
                             )
                         })}
 
                     </div>
-                    <p style={{ color: "#000" }}>{
-                        articles.filter((article: any) => {
-                            return article.selected == true;
-
-                        }).length > 5 ? 5 : articles.filter((article: any) => {
-                            return article.selected == true;
-
-                        }).length} / 5</p>
+                    <p style={{display: wholeTicket ? "none" : "flex", color: "#000" }}>{selectedArticles} / 5</p>
                     <div style={{ display: "flex", flexDirection: "row", gap: 20, justifyContent: "space-between", alignItems: "center" }}>
                         <div style={{ display: "flex", flexDirection: "row", gap: 5 }}>
 

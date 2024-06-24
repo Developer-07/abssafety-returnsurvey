@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from "react";
 import Button from "./Button";
 import styles from "./typecard.module.css";
 import { Poppins } from "next/font/google";
@@ -11,10 +12,13 @@ const poppins = Poppins({
   });
 
 
-export default function Checkbox({label, placeholder, value, setValue}: any) {
+export default function Checkbox({label, placeholder, value, setValue, readOnly, checkRef}: any) {
+
+
+
     return (
         <div style={{display: "flex", flexDirection: "row", gap: 10, alignItems: "center"}}>
-            <input type="checkbox" checked={value} onClick={() => setValue(!value)} className={styles.chbx} placeholder={placeholder} />
+            <input type="checkbox" ref={checkRef} checked={value} onClick={() => readOnly != true && setValue(!value)} className={styles.chbx} placeholder={placeholder} />
             <p className={poppins.className} style={{color: "#000"}}>{label}</p>
         </div>
     )
