@@ -23,7 +23,7 @@ export default function Dialog() {
     var params = useSearchParams();
     const key = params.get('key');
     const type = params.get('type');
-    const [articles, setArticles] = useState<any>([{ serial: "KWX83JKF", articleNumber: "775KVS", count: 1, documentNumber: "123" }]);
+    const [articles, setArticles] = useState<any>([]);
     const [selectedArticles, setSelectedArticles] = useState(0);
     const router = useRouter();
 
@@ -143,6 +143,8 @@ export default function Dialog() {
             setSalutation(salutation ? salutation : "");
             setPhoneNumber(telephoneNumber ? telephoneNumber : "");
 
+            console.log(data);
+
             fetchPositions();
         } catch (error) {
             fetchPositions();
@@ -177,10 +179,15 @@ export default function Dialog() {
 
             var endCustomer = data.ExtraFieldsWithType.filter((field: any) => {
                 if (field.Name == "_TITEL") {
-                    return field.Value;
+                    return field;
                 }
             })
-            endCustomer = endCustomer[0].Value;
+
+            if (endCustomer != null && endCustomer != undefined) {
+                endCustomer = endCustomer[0].Value;
+            } else {
+                endCustomer = "";
+            }
 
             setCustomerNumber(customerNumber ? customerNumber : "");
             setCompanyName(companyName ? companyName : "");
