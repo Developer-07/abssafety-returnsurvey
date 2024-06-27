@@ -280,7 +280,7 @@ export default function Dialog() {
                 },
                 customfield_10067: email,
                 summary: "[AUTO] Neues Ticket",
-                description: "Ein neues RMA-Ticket wurde erstellt für die " + companyName + " in " + cityName + " (" + streetName + " " + streetNumber + ", " + plz + "). " + (wholeTicket ? "Der gesamte Auftrag wurde reklamiert." : "Es wurde" + (length > 1 ? "n" : "") + " " + length + " Artikel reklamiert."),
+                description: "sys_cluent | Ein neues RMA-Ticket wurde erstellt für die " + companyName + " in " + cityName + " (" + streetName + " " + streetNumber + ", " + plz + "). " + (wholeTicket ? "Der gesamte Auftrag wurde reklamiert." : "Es wurde" + (length > 1 ? "n" : "") + " " + length + " Artikel reklamiert."),
                 customfield_10024: requestTypeId.toString(),
                 customfield_10080: cityName,
                 customfield_10059: companyName,
